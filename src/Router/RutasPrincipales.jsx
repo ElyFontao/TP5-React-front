@@ -30,7 +30,7 @@ export const RutasPrincipales = () => {
         
         {/* Rutas Dinámicas (usan :id) */}
         <Route path="/items/:id" element={<ResultadoDetalle />} /> 
-        <Route path="/items/:id/edit" element={<ResultadoEditar />} />
+        <Route path="/items/edit/:id" element={<ResultadoEditar />} />
 
         {/* Ruta Catch-all (404) */}
         <Route path="*" element={<NoEncontrado />} />

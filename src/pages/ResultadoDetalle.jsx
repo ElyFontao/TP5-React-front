@@ -15,7 +15,7 @@ const ResultadoDetalle = () => {
       try {
         setCargando(true);
         // GET directo al API por ID
-        const response = await resultadosApi.get(`/${id}`); 
+        const response = await resultadosApi.get(`/resultados/${id}`); 
         setResultado(response.data);
       } catch (err) {
         console.error("Error al obtener detalle:", err);
