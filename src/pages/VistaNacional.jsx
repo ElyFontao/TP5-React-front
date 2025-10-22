@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import FormularioMesa from '../components/FormularioMesa';
 import ResultadosMesa from '../components/ResultadosMesa';
 import AccionesMesa from '../components/AccionesMesa';
+import Footer from '../components/Footer';
 
 const MESAS_CATAMARCA = [
   { mesaId: '125', circuitoId: '00003', seccionId: '1', localidad: 'San Fernando del Valle' },
@@ -152,16 +153,21 @@ const VistaNacional = () => {
       {resultadosMesa && <ResultadosMesa resultados={resultadosMesa} />}
 
       {/* Acciones */}
-     {resultadosMesa && (
-  <AccionesMesa
-    mesaId={mesaId}
-    circuitoId={circuitoId}
-    seccionId={seccionId}
-    puedeCargar={puedeCargar}
-  />
+{resultadosMesa && (
+  <>
+    <AccionesMesa
+      mesaId={mesaId}
+      circuitoId={circuitoId}
+      seccionId={seccionId}
+      puedeCargar={puedeCargar}
+    />
+    <Footer />
+  </>
 )}
     </section>
   );
 };
+
+
 
 export default VistaNacional;

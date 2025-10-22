@@ -1,4 +1,4 @@
-// src/pages/ResultadoListado.jsx
+// src/pages/ResultadoListado.jsx (/items   )
 
 import React, { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { useResultados } from '../context/ResultadosContext';
 import ResultadoFila from '../components/ResultadoFila'; 
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-
+import Footer from '../components/Footer';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 // MAPA DE COLORES FIJOS por el nombre del campo plano (sin "votos_")
@@ -146,6 +146,7 @@ const ResultadoListado = () => {
                         )}
                     </tbody>
                 </table>
+                <Footer />
             </div>
         </div>
     );

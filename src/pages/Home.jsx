@@ -1,62 +1,80 @@
-// src/pages/Home.jsx
 import { Link } from 'react-router-dom';
+import { AcademicCapIcon, ChartBarIcon, ClipboardDocumentCheckIcon } from '@heroicons/react/24/solid';
+import Footer from '../components/Footer'; // ajustá la ruta según tu estructura
 
-/**
- * Componente principal de la aplicación (Landing Page).
- * Esta vista presenta la aplicación y sirve como centro de navegación
- * hacia las dos funcionalidades principales: la consulta de datos (API) 
- * y la gestión de mesas testigo (CRUD).
- */
-const Home = () => {
-    return (
-        // Contenedor principal: Centrado, con ancho limitado y un fondo suave para destacar el contenido.
-        <div className="max-w-4xl mx-auto p-8 mt-16 text-center bg-white rounded-2xl shadow-xl border-t-4 border-blue-600">
-            
-            {/* Título principal de la aplicación */}
-            <h1 className="text-6xl font-black text-gray-900 mb-2">
-                Sistema Electoral
-            </h1>
-            
-            {/* Subtítulo enfocado en la localización y función */}
-            <h2 className="text-2xl font-light text-blue-700 mb-8 tracking-wide">
-                Mesa de Control | Catamarca
-            </h2>
-            
-            {/* Descripción del propósito de la aplicación */}
-            <p className="text-gray-600 mb-12 text-lg leading-relaxed">
-                Esta herramienta le permite tanto consultar los resultados consolidados (API Nacional del Ministerio del Interior- Republica Argentina) como gestionar y auditar los datos de las mesas testigo registradas (CRUD) para Catamarca.
-            </p>
-
-            {/* Contenedor de botones de navegación: Flex layout para centrar y espaciar */}
-            <div className="flex flex-col md:flex-row justify-center space-y-5 md:space-y-0 md:space-x-8">
-                
-                {/* 1. Botón para la Vista Nacional (Lectura/API) */}
-                <Link 
-                    to="/nacional"
-                    className="
-                        bg-blue-600 hover:bg-blue-800 text-white font-semibold 
-                        py-4 px-8 rounded-full shadow-lg transition duration-300 
-                        transform hover:scale-105 hover:shadow-xl
-                    "
-                >
-                    📊 Resumen Nacional (API)
-                </Link>
-                
-                {/* 2. Botón para el CRUD de Mesas Testigo (Delegado/CRUD) */}
-                <Link 
-                    to="/items"
-                    className="
-                        bg-green-600 hover:bg-green-800 text-white font-semibold 
-                        py-4 px-8 rounded-full shadow-lg transition duration-300 
-                        transform hover:scale-105 hover:shadow-xl
-                    "
-                >
-                    📝 Control de Mesas (CRUD)
-                </Link>
-                
-            </div>
+const Home = ({ rolUsuario }) => {
+  return (
+    <main className="max-w-5xl mx-auto px-6 py-12 mt-12 bg-white rounded-3xl shadow-xl border-t-4 border-blue-600">
+      
+      {/* Encabezado institucional */}
+      <section
+        className="relative bg-blue-900 text-white py-20 px-6 overflow-hidden"
+        style={{
+          backgroundImage: 'url("https://media.ambito.com/p/80d040be8f6a9a2799820cc322686d16/adjuntos/239/imagenes/040/896/0040896175/urna_02_elecciones_argentina_pais-1jpg.jpg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backdropFilter: 'blur(2px)',
+        }}
+      >
+        <div className="relative z-10 text-center max-w-3xl mx-auto">
+          <h1 className="text-5xl sm:text-6xl font-black tracking-tight leading-tight mb-4">
+            Sistema Electoral Catamarca
+          </h1>
+          <p className="text-lg sm:text-xl font-medium tracking-wide text-blue-100">
+            Plataforma de monitoreo, participación y trazabilidad democrática.
+          </p>
+          <div className="mt-4 flex justify-center">
+            <span className="inline-block h-1 w-24 rounded bg-yellow-400"></span>
+          </div>
         </div>
-    );
+
+        {/* Capa de oscurecimiento para mejorar contraste */}
+        <div className="absolute inset-0 bg-black opacity-40 z-0"></div>
+      </section>
+
+      {/* Zócalo institucional con descripción pedagógica */}
+      <section className="relative bg-blue-50 dark:bg-gray-800 border-t-4 border-blue-600 dark:border-blue-400 py-10 px-6 text-center shadow-inner">
+        <p className="text-gray-700 dark:text-gray-200 text-lg sm:text-xl leading-relaxed max-w-3xl mx-auto">
+          Esta plataforma forma parte de una propuesta académica orientada a fortalecer la trazabilidad institucional y el análisis pedagógico del proceso electoral en Catamarca. Integra los resultados oficiales provistos por la API Nacional del Ministerio del Interior con la gestión local de mesas testigo, permitiendo el monitoreo en tiempo real de la participación ciudadana. Su diseño promueve buenas prácticas en visualización de datos, transparencia democrática y formación cívica.
+        </p>
+
+        {/* Separador visual */}
+        <div className="mt-8 flex justify-center">
+          <span className="inline-block h-1 w-24 rounded bg-blue-600 dark:bg-blue-400"></span>
+        </div>
+      </section>
+
+      {/* Botones de navegación con ícono externo */}
+      <section className="flex flex-col md:flex-row justify-center items-center gap-6 py-10 bg-white dark:bg-gray-900 transition-colors">
+        {/* Siempre visible para cualquier rol */}
+        <Link
+          to="/nacional"
+          className="flex items-center gap-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-full shadow-lg transition-transform duration-300 hover:scale-105"
+        >
+          <img
+            src="https://static.vecteezy.com/system/resources/previews/059/253/716/non_2x/3d-render-of-data-analysis-icon-charts-graphs-and-magnifying-glass-free-png.png"
+            alt="Ícono de análisis de datos"
+            className="w-7 h-15 object-contain"
+            loading="lazy"
+          />
+          <span>Resumen Nacional (API)</span>
+        </Link>
+
+        {/* Solo visible para rol delegado */}
+        {rolUsuario === 'delegado' && (
+          <Link
+            to="/items"
+            className="flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-full shadow-lg transition-transform duration-300 hover:scale-105"
+          >
+            <ClipboardDocumentCheckIcon className="w-6 h-6 text-white" />
+            <span>Control de Mesas (CRUD)</span>
+          </Link>
+        )}
+      </section>
+         <Footer />
+    </main>
+  );
 };
 
 export default Home;
