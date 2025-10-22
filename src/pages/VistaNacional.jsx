@@ -1,116 +1,167 @@
-// src/pages/VistaNacional.jsx
 import { useEffect, useState } from 'react';
-import nacionalApi from '../api/nacionalApi';
+import { getResumenCatamarcaReal, getResultadosPorMesaReal } from '../api/nacionalApi';
 import { useNavigate } from 'react-router-dom';
+import FormularioMesa from '../components/FormularioMesa';
+import ResultadosMesa from '../components/ResultadosMesa';
+import AccionesMesa from '../components/AccionesMesa';
 
-// La ruta que tu servidor Express (proxy) está escuchando
-const RUTA_NACIONAL = '/api/nacional'; 
+const MESAS_CATAMARCA = [
+  { mesaId: '125', circuitoId: '00003', seccionId: '1', localidad: 'San Fernando del Valle' },
+  { mesaId: '127', circuitoId: '00003', seccionId: '1', localidad: 'San Fernando del Valle' },
+  { mesaId: '733', circuitoId: '00081', seccionId: '9', localidad: 'Fray Mamerto Esquiu' },
+  { mesaId: '986', circuitoId: '00143', seccionId: '15', localidad: 'Tinogasta' },
+  { mesaId: '1049', circuitoId: '00154', seccionId: '16', localidad: 'Santa Maria' },
+  { mesaId: '896', circuitoId: '00124', seccionId: '13', localidad: 'Belén' }
+];
 
 const VistaNacional = () => {
-    const navigate = useNavigate();
-    const [datosNacionales, setDatosNacionales] = useState(null);
-    const [cargando, setCargando] = useState(true);
-    const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchDatosNacionales = async () => {
-            try {
-                setCargando(true);
-                setError(null);
-                
-                // 1. Llamada al proxy Express
-                const response = await nacionalApi.get(RUTA_NACIONAL);
-                
-                // 2. Extracción y Verificación de datos
-                // La información total está dentro de la propiedad 'estadoRecuento'
-                const estadoRecuento = response.data.estadoRecuento;
+  const [datosNacionales, setDatosNacionales] = useState(null);
+  const [cargandoResumen, setCargandoResumen] = useState(true);
+  const [errorResumen, setErrorResumen] = useState(null);
 
-                // Verificación defensiva contra respuestas vacías o inválidas
-                if (!estadoRecuento || typeof estadoRecuento.cantidadVotantes === 'undefined') {
-                     throw new Error("La API no devolvió datos de totales válidos en estadoRecuento.");
-                }
+  const [mesaQuery, setMesaQuery] = useState('');
+  const [mesaId, setMesaId] = useState('');
+  const [circuitoId, setCircuitoId] = useState('');
+  const [seccionId, setSeccionId] = useState('');
+  const [resultadosMesa, setResultadosMesa] = useState(null);
+  const [cargandoMesa, setCargandoMesa] = useState(false);
+  const [errorMesa, setErrorMesa] = useState(null);
 
-                // 3. MAPEO DE CAMPOS REALES (basado en tu estructura JSON)
-                const datosMapeados = {
-                    // Total de votos emitidos (positivos + nulos + blancos)
-                    totalVotos: estadoRecuento.cantidadVotantes,
-                    
-                    // Porcentaje de participación
-                    participacion: estadoRecuento.participacionPorcentaje,
-                    
-                    // Mesas totalizadas
-                    mesasReportadas: estadoRecuento.mesasTotalizadas 
-                };
+  const puedeCargar = true;
 
-                setDatosNacionales(datosMapeados); 
-                
-            } catch (err) {
-                console.error("Error al obtener datos nacionales:", err);
-                // Mensaje claro si el proxy falla
-                setError("Error: El servidor Proxy de Node.js no está corriendo o falló la conexión con MININTERIOR.");
-            } finally {
-                setCargando(false);
-            }
-        };
-        fetchDatosNacionales();
-    }, []); 
+  useEffect(() => {
+    const fetchResumen = async () => {
+      try {
+        setCargandoResumen(true);
+        const estado = await getResumenCatamarcaReal();
+        setDatosNacionales({
+          totalVotos: estado.cantidadVotantes,
+          participacion: estado.participacionPorcentaje,
+          mesasReportadas: estado.mesasTotalizadas
+        });
+      } catch (err) {
+        setErrorResumen('No se pudo cargar el resumen real de Catamarca.');
+      } finally {
+        setCargandoResumen(false);
+      }
+    };
+    fetchResumen();
+  }, []);
 
-    if (cargando) {
-        return <div className="text-center p-10 text-xl text-blue-600">Cargando datos reales de MININTERIOR...</div>;
+  const seleccionarSugerencia = (item) => {
+    setMesaId(item.mesaId);
+    setCircuitoId(item.circuitoId);
+    setSeccionId(item.seccionId);
+    setMesaQuery(`${item.mesaId} — ${item.seccionId} (${item.localidad})`);
+    setErrorMesa(null);
+    setResultadosMesa(null);
+  };
+
+  const consultarMesa = async () => {
+    setErrorMesa(null);
+    setResultadosMesa(null);
+
+    if (!mesaId || !circuitoId || !seccionId) {
+      setErrorMesa('⚠️ Seleccioná o ingresá una mesa, circuito y sección.');
+      return;
     }
 
-    if (error) {
-        return <div className="text-center p-10 text-xl text-red-600">Error: {error}</div>;
-    }
-    
-    if (!datosNacionales || !datosNacionales.totalVotos) {
-        return <div className="text-center p-10 text-xl text-gray-600">No se encontraron datos de totales válidos.</div>;
-    }
+    setCargandoMesa(true);
+    try {
+      const filtros = {
+        anioEleccion: 2023,
+        tipoRecuento: 1,
+        tipoEleccion: 2,
+        categoriaId: 3,
+        distritoId: 3,
+        seccionProvincialId: 0,
+        seccionId,
+        circuitoId,
+        mesaId
+      };
 
-    return (
-        <div className="max-w-4xl mx-auto p-8 mt-10 bg-white rounded-lg shadow-2xl">
-            <h1 className="text-4xl font-extrabold text-gray-800 mb-6 border-b pb-3">
-                🌎 Resumen de la API Nacional (Tiempo Real)
-            </h1>
-            <p className="text-lg text-gray-600 mb-8">
-                Estos datos son consumidos directamente del servidor del Ministerio del Interior a través de un servidor proxy, evitando problemas de CORS.
-            </p>
+      const res = await getResultadosPorMesaReal(filtros);
+      if (Array.isArray(res.valoresTotalizadosPositivos) && res.valoresTotalizadosPositivos.length > 0) {
+        setResultadosMesa(res);
+      } else {
+        setErrorMesa('⚠️ No hay resultados oficiales disponibles para esta mesa.');
+      }
+    } catch (err) {
+      setErrorMesa('❌ No se pudo obtener resultados para esta mesa.');
+    } finally {
+      setCargandoMesa(false);
+    }
+  };
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                <div className="bg-blue-50 p-6 rounded-lg shadow-md border-l-4 border-blue-600">
-                    <p className="text-sm font-medium text-gray-500">Total de Votos (Nacional)</p>
-                    <p className="text-3xl font-bold text-blue-900 mt-1">
-                        {datosNacionales.totalVotos ? datosNacionales.totalVotos.toLocaleString('es-AR') : 'N/D'}
-                    </p>
-                </div>
-                
-                <div className="bg-green-50 p-6 rounded-lg shadow-md border-l-4 border-green-600">
-                    <p className="text-sm font-medium text-gray-500">Participación (%)</p>
-                    <p className="text-3xl font-bold text-green-900 mt-1">
-                        {datosNacionales.participacion ? `${datosNacionales.participacion}%` : 'N/D'}
-                    </p>
-                </div>
-                
-                <div className="bg-yellow-50 p-6 rounded-lg shadow-md border-l-4 border-yellow-600">
-                    <p className="text-sm font-medium text-gray-500">Mesas Reportadas</p>
-                    <p className="text-3xl font-bold text-yellow-900 mt-1">
-                        {datosNacionales.mesasReportadas ? datosNacionales.mesasReportadas.toLocaleString('es-AR') : 'N/D'}
-                    </p>
-                </div>
-                
-            </div>
-            
-            <div className="mt-10 flex justify-end">
-                <button
-                    onClick={() => navigate('/items')}
-                    className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition duration-300"
-                >
-                    Volver al Listado de Mesas Testigo
-                </button>
-            </div>
-        </div>
-    );
+  return (
+    <section className="p-6 max-w-6xl mx-auto space-y-8">
+      {/* Encabezado */}
+  <header className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center shadow-sm">
+  <h1 className="text-3xl font-bold text-blue-800">📍 Resultados Electorales - Catamarca</h1>
+  <p className="text-gray-600 mt-2">Consulta por mesa, visualización comparativa y carga institucional.</p>
+</header>
+
+      {/* Resumen */}
+      <div>
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">📊 Resumen Provincial</h2>
+        {cargandoResumen ? (
+          <p className="text-blue-600">⏳ Cargando resumen...</p>
+        ) : errorResumen ? (
+          <p className="text-red-600">{errorResumen}</p>
+        ) : (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+  <div className="bg-white border-l-4 border-blue-500 p-4 shadow rounded">
+    <h3 className="text-sm text-gray-500">Votos Totales</h3>
+    <p className="text-2xl font-bold text-blue-700">{datosNacionales.totalVotos.toLocaleString()}</p>
+  </div>
+  <div className="bg-white border-l-4 border-green-500 p-4 shadow rounded">
+    <h3 className="text-sm text-gray-500">Participación</h3>
+    <p className="text-2xl font-bold text-green-700">{datosNacionales.participacion}%</p>
+  </div>
+  <div className="bg-white border-l-4 border-yellow-500 p-4 shadow rounded">
+    <h3 className="text-sm text-gray-500">Mesas Reportadas</h3>
+    <p className="text-2xl font-bold text-yellow-700">{datosNacionales.mesasReportadas}</p>
+  </div>
+</div>
+
+        )}
+      </div>
+
+      {/* Buscador */}
+      <div>
+        <h2 className="text-xl font-semibold text-gray-700 mb-4">🔍 Buscar Mesa</h2>
+        <FormularioMesa
+          mesas={MESAS_CATAMARCA}
+          mesaQuery={mesaQuery}
+          setMesaQuery={setMesaQuery}
+          onSeleccionar={seleccionarSugerencia}
+        />
+        <button
+          onClick={consultarMesa}
+          className="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+        >
+          Consultar Mesa
+        </button>
+        {errorMesa && <p className="mt-2 text-red-600">{errorMesa}</p>}
+      </div>
+
+      {/* Resultados */}
+      {cargandoMesa && <p className="text-blue-600">⏳ Consultando mesa...</p>}
+      {resultadosMesa && <ResultadosMesa resultados={resultadosMesa} />}
+
+      {/* Acciones */}
+     {resultadosMesa && (
+  <AccionesMesa
+    mesaId={mesaId}
+    circuitoId={circuitoId}
+    seccionId={seccionId}
+    puedeCargar={puedeCargar}
+  />
+)}
+    </section>
+  );
 };
 
 export default VistaNacional;

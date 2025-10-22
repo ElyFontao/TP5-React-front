@@ -24,7 +24,7 @@ const Home = () => {
             
             {/* Descripción del propósito de la aplicación */}
             <p className="text-gray-600 mb-12 text-lg leading-relaxed">
-                Esta herramienta le permite tanto consultar los resultados consolidados (simulando una API nacional) como gestionar y auditar los datos de las mesas testigo registradas (CRUD).
+                Esta herramienta le permite tanto consultar los resultados consolidados (API Nacional del Ministerio del Interior- Republica Argentina) como gestionar y auditar los datos de las mesas testigo registradas (CRUD) para Catamarca.
             </p>
 
             {/* Contenedor de botones de navegación: Flex layout para centrar y espaciar */}

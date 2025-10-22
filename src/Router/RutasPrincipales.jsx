@@ -9,8 +9,8 @@ import ResultadoDetalle from '../pages/ResultadoDetalle.jsx';
 import ResultadoCrear from '../pages/ResultadoCrear.jsx';
 import ResultadoEditar from '../pages/ResultadoEditar.jsx';
 import NoEncontrado from '../pages/NoEncontrado.jsx';
-// 🚨 Nueva importación
 import VistaNacional from '../pages/VistaNacional.jsx'; 
+import VistaComparativa from '../pages/VistaComparativa.jsx';
 
 // 🚨 CAMBIO CLAVE: Usamos el nuevo nombre y "export const"
 export const RutasPrincipales = () => {
@@ -23,6 +23,9 @@ export const RutasPrincipales = () => {
         <Route path="/" element={<Home />} />
          {/* 🚨 Nueva Ruta de la API Nacional */}
         <Route path="/nacional" element={<VistaNacional />} /> 
+        <Route path="/comparativa" element={<VistaComparativa />} />
+        <Route path="/mesa/:mesaId/:circuitoId/:seccionId/comparativa" element={<VistaComparativa />} />
+
         
         {/* Rutas CRUD */}
         <Route path="/items" element={<ResultadoListado />} /> 

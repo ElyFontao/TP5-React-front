@@ -11,13 +11,13 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 // MAPA DE COLORES FIJOS por el nombre del campo plano (sin "votos_")
 const PARTY_COLORS = {
-   "PARTIDO_SOCIALISTA": ['#E34234', '#B0171F'], 
-    "JUNTOS_POR_EL_CAMBIO": ['#FFD700', '#DAA520'],     
-    "LA_LIBERTAD_AVANZA": ['#7B68EE', '#483D8B'],       
-    "FUERZA_PATRIA": ['#00F', '#6A0DAD'],            
-      "VOTOS_EN_BLANCO": ['#FFFFFF', '#999999'],              
-      "VOTOS_NULOS": ['#A9A9A9', '#696969'],            
-     "OTROS": ['#4CAF50', '#388E3C'],                 
+"PARTIDO_SOCIALISTA": ['#E34234', '#B0171F'], 
+"JUNTOS_POR_EL_CAMBIO": ['#FFD700', '#DAA520'],     
+ "LA_LIBERTAD_AVANZA": ['#7B68EE', '#483D8B'],       
+"FUERZA_PATRIA": ['#00F', '#6A0DAD'],            
+"VOTOS_EN_BLANCO": ['#FFFFFF', '#999999'],              
+"VOTOS_NULOS": ['#A9A9A9', '#696969'],            
+"OTROS": ['#4CAF50', '#388E3C'],                 
 };
 
 
@@ -95,7 +95,7 @@ const ResultadoListado = () => {
             
             <div className="flex justify-between items-center mb-6 border-b pb-4">
                 <h1 className="text-3xl font-bold text-gray-800">
-                    🗳️ Resultados Provisorios (Mesas Testigo)
+                    🗳️ Resultados Provisorios -Mesas Testigo
                 </h1>
                 <button onClick={() => navigate('/items/create')}
                     className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 shadow-lg flex items-center">
