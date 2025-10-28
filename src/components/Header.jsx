@@ -20,27 +20,31 @@ const Navbar = () => {
   const [modoOscuro, setModoOscuro] = useState(false);
   const [menuAbierto, setMenuAbierto] = useState(false);
 
+  // Estilo condicional para enlaces activos
   const getNavLinkClass = ({ isActive }) =>
     isActive
       ? 'text-white bg-blue-700 px-4 py-2 rounded-md text-sm font-medium transition duration-150'
       : 'text-gray-300 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-md text-sm font-medium transition duration-150';
 
+  // Alterna modo claro/oscuro
   const toggleModoOscuro = () => {
     setModoOscuro(!modoOscuro);
     document.documentElement.classList.toggle('dark');
   };
 
+  // Íconos personalizados por rol institucional
   const getAvatarUrl = (rol) => {
     switch (rol) {
       case 'admin':
-        return 'https://cdn-icons-png.flaticon.com/512/2206/2206368.png';
+        return 'https://cdn-icons-png.flaticon.com/512/2529/2529645.png';
       case 'fiscal':
-        return 'https://cdn-icons-png.flaticon.com/512/2206/2206337.png';
+        return 'https://cdn-icons-png.flaticon.com/512/1819/1819922.png';
       default:
         return 'https://cdn-icons-png.flaticon.com/512/2206/2206379.png';
     }
   };
 
+  // Cierre de sesión con redirección
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -49,7 +53,7 @@ const Navbar = () => {
   return (
     <nav className="bg-[#103693] dark:bg-gray-900 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        {/* Encabezado superior */}
+        {/* 🏛️ Encabezado institucional */}
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 text-white text-2xl sm:text-3xl font-extrabold tracking-wide">
             <img
@@ -61,7 +65,7 @@ const Navbar = () => {
             <span className="whitespace-nowrap">Elecciones Catamarca</span>
           </Link>
 
-          {/* Botón hamburguesa */}
+          {/* 🍔 Botón hamburguesa para móviles */}
           <button
             onClick={() => setMenuAbierto(!menuAbierto)}
             className="text-white md:hidden"
@@ -71,13 +75,13 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Menú desplegable */}
+        {/* 📂 Menú desplegable con navegación y controles */}
         <div
           className={`mt-6 md:mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-6 transition-all duration-300 ${
             menuAbierto ? 'block' : 'hidden md:flex'
           }`}
         >
-          {/* Navegación principal */}
+          {/* 🧭 Navegación principal por rol */}
           <div className="flex flex-col md:flex-row items-center gap-4">
             <NavLink to="/" className={getNavLinkClass}>
               <div className="flex items-center gap-1">
@@ -114,7 +118,7 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Controles de sesión, rol y tema */}
+          {/* 👤 Controles de sesión y tema */}
           <div className="flex flex-col md:flex-row items-center gap-4">
             {usuario && (
               <div className="flex items-center gap-3 text-white">
@@ -133,7 +137,7 @@ const Navbar = () => {
               </div>
             )}
 
-            {/* Modo oscuro */}
+            {/* 🌗 Alternador de modo claro/oscuro */}
             <button
               onClick={toggleModoOscuro}
               className="text-gray-300 hover:text-white transition"

@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // 🚨 Apunta al puerto donde corre tu servidor Express
-const BASE_URL_PROXY = 'http://localhost:3001';
+const BASE_URL_PROXY = 'https://gestor-electoral.onrender.com';
 
 const nacionalApi = axios.create({
   baseURL: BASE_URL_PROXY,
