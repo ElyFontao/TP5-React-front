@@ -11,7 +11,11 @@ const AccionesMesa = ({ mesaId, circuitoId, seccionId, puedeCargar }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <button
-          onClick={() => navigate(`/mesa/${mesaId}/${circuitoId}/${seccionId}/comparativa`)}
+          onClick={() =>
+            navigate('/comparativa', {
+              state: { mesaId, circuitoId, seccionId }
+            })
+          }
           className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded transition duration-200"
         >
           <span>📊</span>

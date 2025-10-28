@@ -36,7 +36,7 @@ const Home = ({ rolUsuario }) => {
       {/* Zócalo institucional con descripción pedagógica */}
       <section className="relative bg-blue-50 dark:bg-gray-800 border-t-4 border-blue-600 dark:border-blue-400 py-10 px-6 text-center shadow-inner">
         <p className="text-gray-700 dark:text-gray-200 text-lg sm:text-xl leading-relaxed max-w-3xl mx-auto">
-          Esta plataforma forma parte de una propuesta académica orientada a fortalecer la trazabilidad institucional y el análisis pedagógico del proceso electoral en Catamarca. Integra los resultados oficiales provistos por la API Nacional del Ministerio del Interior con la gestión local de mesas testigo, permitiendo el monitoreo en tiempo real de la participación ciudadana. Su diseño promueve buenas prácticas en visualización de datos, transparencia democrática y formación cívica.
+          Esta plataforma forma parte de una propuesta académica orientada a fortalecer la trazabilidad y el análisis del proceso electoral en Catamarca. Integra los resultados oficiales provistos por la API Nacional del Ministerio del Interior con la gestión local de mesas testigo, permitiendo el monitoreo en tiempo real de la participación ciudadana. Su diseño promueve buenas prácticas en visualización de datos.
         </p>
 
         {/* Separador visual */}
