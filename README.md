@@ -64,7 +64,6 @@ Está diseñada para uso institucional, pedagógico y técnico, con foco en traz
 
 vista-nacional/ ├── client/ # Frontend React │ ├── src/ │ │ ├── pages/ # Vistas principales │ │ ├── components/ # Componentes reutilizables │ │ ├── context/ # Contexto global │ │ ├── api/ # Axios configurado │ │ ├── auth/ # Hook de autenticación │ │ └── assets/ # Recursos visuales ├── server/ # Backend Express │ ├── models/ # Esquemas Mongoose │ ├── routes/ # Rutas API │ ├── controllers/ # Lógica de negocio │ ├── middleware/ # Autenticación y validación │ └── index.js # Entrada del servidor
 
-Código
 
 ---
 
@@ -114,24 +113,18 @@ POST	/api/usuarios/fiscales	Crear nuevo fiscal
 DELETE	/api/usuarios/fiscales/:id	Eliminar fiscal
 🧪 Funcionalidades principales
 ✅ Registro de resultados por mesa testigo
-
 ✅ Validación de votos vs electores
-
 ✅ Visualización por partido (gráfico de barras)
-
 ✅ Edición y eliminación de resultados
-
 ✅ Panel de administración de fiscales
-
-✅ Acceso diferenciado por rol
-
 ✅ Modo oscuro y diseño accesible
 
 🎓 Diplomatura
-Este proyecto fue desarrollado como parte de la Diplomatura en Programación Web Fullstack con React y Node.js, dictada por la Universidad Nacional de Catamarca en articulación con la Universidad Tecnológica Nacional y el Ministerio de Ciencia, Tecnología e Innovación de la Nación. Fecha de entrega: Octubre 2025
+Este proyecto fue desarrollado como parte de la Diplomatura en Programación Web Fullstack con React y Node.js, dictada por la Universidad Nacional de Catamarca en articulación con el Nodo Tecnologico de la Capital. Fecha de entrega: Octubre 2025
 
 📄 Licencia
 Este proyecto es de uso educativo e institucional. Puede ser adaptado para simulaciones, capacitaciones o proyectos cívicos. Se agradece la atribución si se reutiliza.
 
 ✨ Autora
 Elizabeth Fontao Alumna de la Diplomatura en Programación Web Fullstack San Fernando del Valle de Catamarca, Argentina
+
