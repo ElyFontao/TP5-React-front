@@ -55,70 +55,62 @@ vista-nacional/ ├── client/ # Frontend React │ ├── src/ │ │ �
 Código
 
 ---
-
 ## 🚀 Instalación y ejecución
 
 ### 🔧 Backend
-
-```bash
 cd server
 npm install
 touch .env
 Editar el archivo .env con tus credenciales:
 
-Código
+###Código
 PORT=3001
 MONGO_URI=tu_uri_de_mongodb_atlas
 JWT_SECRET=clave_secreta_segura
 Iniciar el servidor:
-
 bash
 npm run dev
-🖥️ Frontend
+
+###🖥️ Frontend
 bash
 cd client
 npm install
 npm run dev
 Abrí http://localhost:5173 en tu navegador.
 
-🔐 Autenticación y roles
+##🔐 Autenticación y roles
 Iniciar sesión con correo electrónico y contraseña
-
 Token JWT almacenado en contexto
-
 Roles definidos: ciudadano, admin, fiscal
-
 Acceso condicional a rutas y botones según rol
 
-📦 APIs consumidas
+##📦 APIs consumidas
+
 Resultados
 Método	Ruta	Descripción
 GET	/api/resultados	Listar todas las mesas
 POST	/api/resultados	Crear nueva mesa
 PUT	/api/resultados/:id	Editar mesa existente
 DELETE	/api/resultados/:id	Eliminar mesa
+
 Usuarios fiscales
 Método	Ruta	Descripción
 GET	/api/usuarios/fiscales	Listar fiscales
 POST	/api/usuarios/fiscales	Crear nuevo fiscal
 DELETE	/api/usuarios/fiscales/:id	Eliminar fiscal
-🧪 Funcionalidades principales
+
+##🧪 Funcionalidades principales
 ✅ Registro de resultados por mesa testigo
-
 ✅ Validación de votos vs electores
-
 ✅ Visualización por partido (gráfico de barras)
-
 ✅ Edición y eliminación de resultados
-
 ✅ Panel de administración de fiscales
-
 ✅ Acceso diferenciado por rol
-
 ✅ Modo oscuro y diseño accesible
 
-📄 Licencia
+#📄 Licencia
 Este proyecto es de uso educativo e institucional. Puede ser adaptado para simulaciones, capacitaciones o proyectos cívicos. Se agradece la atribución si se reutiliza.
 
-✨ Autora
+#✨ Autora
 Elizabeth Fontao
+
