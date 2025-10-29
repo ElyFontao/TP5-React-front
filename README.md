@@ -33,7 +33,7 @@ Está diseñada para uso **institucional, pedagógico y técnico**, con foco en 
 - Chart.js  
 - Heroicons  
 - Netlify (despliegue)
-
+---
 ### ⚙️ Backend
 
 - Express.js  
@@ -67,7 +67,7 @@ vista-nacional/
 ├── middleware/ # Autenticación y validación
 └── index.js # Entrada del servidor
 
-
+---
 ## 🚀 Instalación y ejecución
 
 ### 🔧 Backend
@@ -77,41 +77,36 @@ cd server
 npm install
 touch .env
 Editar el archivo .env con tus credenciales:
-
-
 Iniciar el servidor:
 npm run dev
-🖥️ Frontend
 
+##🖥️ Frontend
 cd client
 npm install
 npm run dev
 Abrí http://localhost:5173 en tu navegador.
-
-🔐 Autenticación y roles
+---
+##🔐 Autenticación y roles
 Login con email y contraseña
-
 Token JWT almacenado en contexto
-
 Roles definidos: ciudadano, admin,  fiscal
-
 Acceso condicional a rutas y botones según rol
-
-📦 APIs consumidas
+---
+##📦 APIs consumidas
 Resultados
 Método	Ruta	Descripción
 GET	/api/resultados	Listar todas las mesas
 POST	/api/resultados	Crear nueva mesa
 PUT	/api/resultados/:id	Editar mesa existente
 DELETE	/api/resultados/:id	Eliminar mesa
-
-Usuarios fiscales
+---
+##Usuarios fiscales
 Método	Ruta	Descripción
 GET	/api/usuarios/fiscales	Listar fiscales
 POST	/api/usuarios/fiscales	Crear nuevo fiscal
 DELETE	/api/usuarios/fiscales/:id	Eliminar fiscal
-
-🧪 Funcionalidades principales
+---
+##🧪 Funcionalidades principales
 ✅ Registro de resultados por mesa testigo
 ✅ Validación de votos vs electores
 ✅ Visualización por partido (gráfico de barras)
@@ -120,26 +115,15 @@ DELETE	/api/usuarios/fiscales/:id	Eliminar fiscal
 ✅ Acceso diferenciado por rol
 ✅ Modo oscuro y diseño accesible
 
-🧠 Enfoque pedagógico
-Este proyecto está diseñado como una herramienta didáctica para enseñar:
-
-Modelado de interfaces democráticas
-
-Validación institucional de datos
-
-Diseño accesible y responsivo
-
-Separación de responsabilidades entre componentes
-
-Trazabilidad territorial y visualización cívica
-
-📄 Licencia
+---
+##📄 Licencia
 Este proyecto es de uso educativo e institucional.
 Puede ser adaptado para simulaciones, capacitaciones o proyectos cívicos.
 Se agradece la atribución si se reutiliza.
-
-✨ Autora
+---
+##✨ Autora
 Elizabeth Fontao
+
 
 
 
