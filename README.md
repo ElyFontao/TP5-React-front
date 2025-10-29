@@ -42,7 +42,6 @@ Abrí [http://localhost:5173](http://localhost:5173) en tu navegador.
 ---
 
 ## 🔐 Roles y autenticación
-
 - Login con email y contraseña  
 - Token JWT en contexto  
 - Roles: `ciudadano`, `admin`, `fiscal`  
@@ -85,6 +84,7 @@ Abrí [http://localhost:5173](http://localhost:5173) en tu navegador.
 ## ✨ Autora
 
 **Elizabeth Fontao**
+
 
 
 
