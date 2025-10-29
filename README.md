@@ -67,6 +67,7 @@ vista-nacional/ ├── client/ # Frontend React │ ├── src/ │ │ �
 
 ---
 
+```markdown
 ## 🚀 Instalación y ejecución
 
 ### 🔧 Backend
@@ -75,56 +76,98 @@ vista-nacional/ ├── client/ # Frontend React │ ├── src/ │ │ �
 cd server
 npm install
 touch .env
-.env:
+```
 
-env
+Editar el archivo `.env` con tus credenciales:
+
+```env
 PORT=3001
 MONGO_URI=tu_uri_de_mongodb_atlas
 JWT_SECRET=clave_secreta_segura
-bash
+```
+
+Iniciar el servidor:
+
+```bash
 npm run dev
-🖥️ Frontend
-bash
+```
+
+---
+
+### 🖥️ Frontend
+
+```bash
 cd client
 npm install
 npm run dev
-Abrí http://localhost:5173 en tu navegador.
+```
 
-🔐 Autenticación y roles
-Login con email y contraseña
+Abrí [http://localhost:5173](http://localhost:5173) en tu navegador.
 
-Token JWT almacenado en contexto
+---
 
-Roles definidos: admin, delegado, veedor, fiscal
+## 🔐 Autenticación y roles
 
-Acceso condicional a rutas y botones según rol
+- Login con email y contraseña  
+- Token JWT almacenado en contexto  
+- Roles definidos: `admin`, `delegado`, `veedor`, `fiscal`  
+- Acceso condicional a rutas y botones según rol
 
-📦 APIs consumidas
-Resultados
-Método	Ruta	Descripción
-GET	/api/resultados	Listar todas las mesas
-POST	/api/resultados	Crear nueva mesa
-PUT	/api/resultados/:id	Editar mesa existente
-DELETE	/api/resultados/:id	Eliminar mesa
-Usuarios fiscales
-Método	Ruta	Descripción
-GET	/api/usuarios/fiscales	Listar fiscales
-POST	/api/usuarios/fiscales	Crear nuevo fiscal
-DELETE	/api/usuarios/fiscales/:id	Eliminar fiscal
-🧪 Funcionalidades principales
-✅ Registro de resultados por mesa testigo
-✅ Validación de votos vs electores
-✅ Visualización por partido (gráfico de barras)
-✅ Edición y eliminación de resultados
-✅ Panel de administración de fiscales
-✅ Modo oscuro y diseño accesible
+---
 
-🎓 Diplomatura
-Este proyecto fue desarrollado como parte de la Diplomatura en Programación Web Fullstack con React y Node.js, dictada por la Universidad Nacional de Catamarca en articulación con el Nodo Tecnologico de la Capital. Fecha de entrega: Octubre 2025
+## 📦 APIs consumidas
 
-📄 Licencia
-Este proyecto es de uso educativo e institucional. Puede ser adaptado para simulaciones, capacitaciones o proyectos cívicos. Se agradece la atribución si se reutiliza.
+### Resultados
 
-✨ Autora
-Elizabeth Fontao Alumna de la Diplomatura en Programación Web Fullstack San Fernando del Valle de Catamarca, Argentina
+| Método | Ruta                   | Descripción             |
+|--------|------------------------|-------------------------|
+| GET    | `/api/resultados`      | Listar todas las mesas  |
+| POST   | `/api/resultados`      | Crear nueva mesa        |
+| PUT    | `/api/resultados/:id`  | Editar mesa existente   |
+| DELETE | `/api/resultados/:id`  | Eliminar mesa           |
+
+### Usuarios fiscales
+
+| Método | Ruta                          | Descripción         |
+|--------|-------------------------------|---------------------|
+| GET    | `/api/usuarios/fiscales`      | Listar fiscales     |
+| POST   | `/api/usuarios/fiscales`      | Crear nuevo fiscal  |
+| DELETE | `/api/usuarios/fiscales/:id`  | Eliminar fiscal     |
+
+---
+
+## 🧪 Funcionalidades principales
+
+- ✅ Registro de resultados por mesa testigo  
+- ✅ Validación de votos vs electores  
+- ✅ Visualización por partido (gráfico de barras)  
+- ✅ Edición y eliminación de resultados  
+- ✅ Panel de administración de fiscales  
+- ✅ Modo oscuro y diseño accesible
+
+---
+
+## 🎓 Diplomatura
+
+Este proyecto fue desarrollado como parte de la **Diplomatura en Programación Web Fullstack con React y Node.js**, dictada por la **Universidad Nacional de Catamarca** en articulación con el **Nodo Tecnológico de la Capital**.  
+**Fecha de entrega:** Octubre 2025
+
+---
+
+## 📄 Licencia
+
+Este proyecto es de uso educativo e institucional.  
+Puede ser adaptado para simulaciones, capacitaciones o proyectos cívicos.  
+Se agradece la atribución si se reutiliza.
+
+---
+
+## ✨ Autora
+
+**Elizabeth Fontao**  
+Alumna de la Diplomatura en Programación Web Fullstack  
+San Fernando del Valle de Catamarca, Argentina
+```
+
+---
 
