@@ -1,199 +1,208 @@
-// src/components/ResultadoFormulario.jsx
-
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
-// Lista estática de partidos y su mapeo al campo plano de MockAPI (votos_NOMBRE)
+// 🧭 Lista institucional de partidos
 const PARTIDOS_ESTATICOS = [
-    { name: 'Partido Socialista', field: 'votos_PARTIDO_SOCIALISTA', placeholder: 'Votos PS', isCoalicion: true },
-    { name: 'Juntos por el Cambio', field: 'votos_JUNTOS_POR_EL_CAMBIO', placeholder: 'Votos JxC', isCoalicion: true },
-    { name: 'La Libertad Avanza', field: 'votos_LA_LIBERTAD_AVANZA', placeholder: 'Votos LLA' },
-    { name: 'Fuerza Patria', field: 'votos_FUERZA_PATRIA', placeholder: 'Votos FP' },
-    { name: 'Partido Unión Civica Radical', field: 'votos_UCR', placeholder: 'Votos UCR' }, // Agregado previamente
-    // Votos especiales
-    { name: 'Votos en Blanco', field: 'votos_VOTOS_EN_BLANCO', placeholder: 'Votos en Blanco', isEspecial: true },
-    { name: 'Votos Nulos', field: 'votos_VOTOS_NULOS', placeholder: 'Votos Nulos', isEspecial: true },
+  { name: 'Partido Socialista', field: 'votos_PARTIDO_SOCIALISTA', placeholder: 'Votos PS', isCoalicion: true },
+  { name: 'Juntos por el Cambio', field: 'votos_JUNTOS_POR_EL_CAMBIO', placeholder: 'Votos JxC', isCoalicion: true },
+  { name: 'La Libertad Avanza', field: 'votos_LA_LIBERTAD_AVANZA', placeholder: 'Votos LLA' },
+  { name: 'Fuerza Patria', field: 'votos_FUERZA_PATRIA', placeholder: 'Votos FP' },
+  { name: 'Partido Unión Civica Radical', field: 'votos_UCR', placeholder: 'Votos UCR' },
+  { name: 'Votos en Blanco', field: 'votos_VOTOS_EN_BLANCO', placeholder: 'Votos en Blanco', isEspecial: true },
+  { name: 'Votos Nulos', field: 'votos_VOTOS_NULOS', placeholder: 'Votos Nulos', isEspecial: true },
 ];
 
-/**
- * Componente de Formulario para Cargar/Editar los resultados de UNA MESA COMPLETA.
- */
-const ResultadoFormulario = ({ resultadoAEditar, onSubmit, esEdicion }) => {
-    
-    const [datosMesa, setDatosMesa] = useState({
-        mesaId: '', circuitoId: '', totalElectores: 0,
-    });
-    const [votosPartidos, setVotosPartidos] = useState(PARTIDOS_ESTATICOS.map(p => ({
-        ...p, votos: 0,
-    })));
-    const [errorForm, setErrorForm] = useState(null); // Estado para mensajes de error de validación
+// ✅ Componente institucional para carga/edición de resultados por mesa
+const ResultadoFormulario = ({ resultadoAEditar, onSubmit, onCancel, esEdicion }) => {
+  const [datosMesa, setDatosMesa] = useState({
+    mesaId: '', circuitoId: '', totalElectores: 0,
+  });
 
-    // --- CÁLCULOS AUTOMÁTICOS Y VALIDACIÓN ---
-    const { totalVotos, participacionPorcentaje } = useMemo(() => {
-        // Suma todos los votos cargados (partidos + blanco + nulo)
-        const sumaVotos = votosPartidos.reduce((sum, p) => sum + (Number(p.votos) || 0), 0);
-        
-        const totalElectores = Number(datosMesa.totalElectores);
-        
-        // Cálculo de participación automática
-        const participacion = (totalElectores > 0 && sumaVotos)
-            ? ((sumaVotos / totalElectores) * 100).toFixed(2) // Dos decimales
-            : '0.00';
+  const [votosPartidos, setVotosPartidos] = useState(PARTIDOS_ESTATICOS.map(p => ({
+    ...p, votos: 0,
+  })));
 
-        return { 
-            totalVotos: sumaVotos, 
-            participacionPorcentaje: participacion 
-        };
-    }, [votosPartidos, datosMesa.totalElectores]);
+  const [errorForm, setErrorForm] = useState(null);
 
-    // --- Efecto de Carga para Edición ---
-    useEffect(() => {
-        if (resultadoAEditar && esEdicion) {
-            setDatosMesa({
-                mesaId: resultadoAEditar.mesaId || '',
-                circuitoId: resultadoAEditar.circuitoId || '',
-                totalElectores: resultadoAEditar.totalElectores || 0,
-            });
+  // 📊 Cálculo automático de participación
+  const { totalVotos, participacionPorcentaje } = useMemo(() => {
+    const sumaVotos = votosPartidos.reduce((sum, p) => sum + (Number(p.votos) || 0), 0);
+    const totalElectores = Number(datosMesa.totalElectores);
+    const participacion = (totalElectores > 0 && sumaVotos)
+      ? ((sumaVotos / totalElectores) * 100).toFixed(2)
+      : '0.00';
+    return { totalVotos: sumaVotos, participacionPorcentaje: participacion };
+  }, [votosPartidos, datosMesa.totalElectores]);
 
-            // CONVERSIÓN DE PLANO A ESTADO INTERNO (Lectura)
-            const votosActualizados = PARTIDOS_ESTATICOS.map(pEstatico => {
-                const votosMesa = resultadoAEditar[pEstatico.field] || 0; 
-                return {
-                    ...pEstatico,
-                    votos: votosMesa,
-                };
-            });
-            setVotosPartidos(votosActualizados);
-        }
-    }, [resultadoAEditar, esEdicion]);
+  // 📝 Carga de datos si es edición
+  useEffect(() => {
+    if (resultadoAEditar && esEdicion) {
+      setDatosMesa({
+        mesaId: resultadoAEditar.mesaId || '',
+        circuitoId: resultadoAEditar.circuitoId || '',
+        totalElectores: resultadoAEditar.totalElectores || 0,
+      });
 
-    // --- Manejadores de Cambio ---
-    const handleMesaChange = useCallback((e) => {
-        const { name, value } = e.target;
-        // Asegurar que los campos numéricos sean números
-        setDatosMesa(prev => ({ 
-            ...prev, 
-            [name]: (name === 'totalElectores' ? Number(value) : value)
-        }));
-        setErrorForm(null); // Limpiar errores al cambiar
-    }, []);
-    
-    const handleVotoChange = useCallback((index, value) => {
-        // 🚨 PREVENCIÓN DE VOTOS NEGATIVOS
-        const votos = Math.max(0, Number(value));
-        
-        setVotosPartidos(prev => prev.map((p, i) => 
-            i === index ? { ...p, votos: votos } : p
-        ));
-        setErrorForm(null); // Limpiar errores al cambiar
-    }, []);
+      const votosActualizados = PARTIDOS_ESTATICOS.map(p => ({
+        ...p,
+        votos: resultadoAEditar[p.field] || 0,
+      }));
+      setVotosPartidos(votosActualizados);
+    }
+  }, [resultadoAEditar, esEdicion]);
 
-    // --- Manejador de Envío y Validación Final ---
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  // 🔁 Manejadores de cambio
+  const handleMesaChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setDatosMesa(prev => ({
+      ...prev,
+      [name]: name === 'totalElectores' ? Number(value) : value,
+    }));
+    setErrorForm(null);
+  }, []);
 
-        // 🚨 VALIDACIÓN PRINCIPAL: Votos Contados vs. Electores
-        if (totalVotos > datosMesa.totalElectores) {
-            setErrorForm("Error: El Total de Votos Contados (" + totalVotos + ") no puede ser mayor que el Total de Electores (" + datosMesa.totalElectores + ").");
-            return;
-        }
+  const handleVotoChange = useCallback((index, value) => {
+    const votos = Math.max(0, Number(value));
+    setVotosPartidos(prev => prev.map((p, i) =>
+      i === index ? { ...p, votos } : p
+    ));
+    setErrorForm(null);
+  }, []);
 
-        // 🚨 VALIDACIÓN MÍNIMA: Mesa y Circuito no pueden estar vacíos
-        if (!datosMesa.mesaId || !datosMesa.circuitoId || datosMesa.totalElectores <= 0) {
-            setErrorForm("Error: Por favor complete los campos de Mesa, Circuito y Total de Electores.");
-            return;
-        }
+  // ✅ Validación y envío
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
+    if (totalVotos > datosMesa.totalElectores) {
+      setErrorForm(`Error: Votos (${totalVotos}) no pueden superar electores (${datosMesa.totalElectores}).`);
+      return;
+    }
 
-        // CONVERSIÓN DE ESTADO INTERNO A PLANO (Escritura para MockAPI):
-        const votosPlanos = votosPartidos.reduce((obj, p) => {
-            // Solo incluimos campos si tienen votos > 0 para MockAPI
-            if (Number(p.votos) > 0) {
-                obj[p.field] = Number(p.votos); 
-            }
-            return obj;
-        }, {});
+    if (!datosMesa.mesaId || !datosMesa.circuitoId || datosMesa.totalElectores <= 0) {
+      setErrorForm("Error: Completá Mesa, Circuito y Total de Electores.");
+      return;
+    }
 
-        // Objeto de la mesa final listo para enviar a la API
-        const resultadoFinal = {
-            ...datosMesa,
-            ...votosPlanos, 
-            totalVotantes: totalVotos, // Cálculo automático
-            participacionPorcentaje: Number(participacionPorcentaje), // Almacenar el % calculado
-            actualizacion: new Date().toISOString(),
-        };
+    const votosPlanos = votosPartidos.reduce((obj, p) => {
+      if (Number(p.votos) > 0) obj[p.field] = Number(p.votos);
+      return obj;
+    }, {});
 
-        // Si pasa todas las validaciones
-        onSubmit(resultadoFinal);
+    const resultadoFinal = {
+      ...datosMesa,
+      ...votosPlanos,
+      totalVotantes: totalVotos,
+      participacionPorcentaje: Number(participacionPorcentaje),
+      actualizacion: new Date().toISOString(),
     };
 
-    // Resumen de Votación (Read-Only)
-    const diferenciaVotantes = datosMesa.totalElectores - totalVotos;
+    onSubmit(resultadoFinal);
+  };
 
-    return (
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-2xl space-y-6">
-            
-            <h2 className="text-2xl font-bold text-blue-700 border-b pb-3 mb-4">Datos de la Mesa de Votación</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div><label className="block text-sm font-medium text-gray-700">Mesa N°</label>
-                    <input type="text" name="mesaId" value={datosMesa.mesaId} onChange={handleMesaChange} required
-                           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" /></div>
-                <div><label className="block text-sm font-medium text-gray-700">Circuito N°</label>
-                    <input type="text" name="circuitoId" value={datosMesa.circuitoId} onChange={handleMesaChange} required
-                           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" /></div>
-                <div><label className="block text-sm font-medium text-gray-700">Total Electores Empadronados</label>
-                    <input type="number" name="totalElectores" value={datosMesa.totalElectores} onChange={handleMesaChange} required
-                           min="1" // Electores no pueden ser 0 o menos
-                           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" /></div>
-            </div>
+  const diferenciaVotantes = datosMesa.totalElectores - totalVotos;
 
-            <h2 className="text-2xl font-bold text-green-700 border-b pb-3 pt-6 mb-4">Votos por Fuerza Política</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {votosPartidos.map((p, index) => (
-                    <div key={p.field}>
-                        <label className={`block text-sm font-medium ${p.isEspecial ? 'text-red-700' : 'text-gray-700'}`}>
-                            {p.name}
-                        </label>
-                        <input type="number" value={p.votos} onChange={(e) => handleVotoChange(index, e.target.value)}
-                               placeholder={p.placeholder} 
-                               min="0" // 🚨 Bloquea la entrada de votos negativos en el navegador
-                               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-lg font-semibold" />
-                    </div>
-                ))}
-            </div>
+  return (
+    <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-2xl space-y-6 transition-colors">
+      <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-300 border-b pb-3 mb-4">
+        Datos de la Mesa de Votación
+      </h2>
 
-            {/* Mensaje de Error de Validación */}
-            {errorForm && (
-                <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mt-4" role="alert">
-                    <p className="font-bold">Error de Validación</p>
-                    <p>{errorForm}</p>
-                </div>
-            )}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {['mesaId', 'circuitoId', 'totalElectores'].map((field) => (
+          <div key={field}>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+              {field === 'mesaId' ? 'Mesa N°' : field === 'circuitoId' ? 'Circuito N°' : 'Total Electores'}
+            </label>
+            <input
+              type={field === 'totalElectores' ? 'number' : 'text'}
+              name={field}
+              value={datosMesa[field]}
+              onChange={handleMesaChange}
+              required
+              min={field === 'totalElectores' ? 1 : undefined}
+              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-md shadow-sm p-2 transition-colors"
+            />
+          </div>
+        ))}
+      </div>
 
-            {/* Resumen de Votación (Read-Only) */}
-            <div className="pt-6 border-t mt-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-3">Resumen del Acta</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg">
-                    <div className="col-span-1"><p className="font-medium text-gray-600">Total Votos Emitidos Validos:</p>
-                        <p className="text-2xl font-extrabold text-blue-600">{totalVotos}</p></div>
-                    <div className="col-span-1"><p className="font-medium text-gray-600">Total Electores habilitados:</p>
-                        <p className="text-2xl font-extrabold text-gray-800">{datosMesa.totalElectores}</p></div>
-                    <div className="col-span-1"><p className="font-medium text-gray-600">Falta Votar (Electores - Votantes):</p>
-                        <p className={`text-2xl font-extrabold ${diferenciaVotantes < 0 ? 'text-red-600' : 'text-green-600'}`}>{diferenciaVotantes}</p></div>
-                    
-                    {/* 🚨 Cálculo de Participación Automática */}
-                    <div className="col-span-1"><p className="font-medium text-gray-600">Participación %:</p>
-                        <p className="text-2xl font-extrabold text-purple-600">{participacionPorcentaje}%</p></div>
-                </div>
-            </div>
+      <h2 className="text-2xl font-bold text-green-700 dark:text-green-400 border-b pb-3 pt-6 mb-4">
+        Votos por Fuerza Política
+      </h2>
 
-            {/* Botón de Acción */}
-            <div className="flex justify-end pt-6">
-                <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300">
-                    {esEdicion ? 'Guardar Cambios' : 'Registrar Mesa Completa'}
-                </button>
-            </div>
-        </form>
-    );
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {votosPartidos.map((p, index) => (
+          <div key={p.field}>
+            <label className={`block text-sm font-medium ${p.isEspecial ? 'text-red-700 dark:text-red-400' : 'text-gray-700 dark:text-gray-200'}`}>
+              {p.name}
+            </label>
+            <input
+              type="number"
+              value={p.votos}
+              onChange={(e) => handleVotoChange(index, e.target.value)}
+              placeholder={p.placeholder}
+              min="0"
+              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-md shadow-sm p-2 text-lg font-semibold transition-colors"
+            />
+          </div>
+        ))}
+      </div>
+  {/* 🛑 Mensaje de error de validación */}
+      {errorForm && (
+        <div className="bg-red-100 dark:bg-red-900 border-l-4 border-red-500 text-red-700 dark:text-red-300 p-3 mt-4" role="alert">
+          <p className="font-bold">Error de Validación</p>
+          <p>{errorForm}</p>
+        </div>
+      )}
+
+      {/* 📊 Resumen del acta */}
+      <div className="pt-6 border-t mt-6">
+        <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3">Resumen del Acta</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+          <div>
+            <p className="font-medium text-gray-600 dark:text-gray-300">Total Votos Emitidos:</p>
+            <p className="text-2xl font-extrabold text-blue-600 dark:text-blue-400">{totalVotos}</p>
+          </div>
+          <div>
+            <p className="font-medium text-gray-600 dark:text-gray-300">Total Electores:</p>
+            <p className="text-2xl font-extrabold text-gray-800 dark:text-gray-100">{datosMesa.totalElectores}</p>
+          </div>
+          <div>
+            <p className="font-medium text-gray-600 dark:text-gray-300">Falta Votar:</p>
+            <p className={`text-2xl font-extrabold ${diferenciaVotantes < 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
+              {diferenciaVotantes}
+            </p>
+          </div>
+          <div>
+            <p className="font-medium text-gray-600 dark:text-gray-300">Participación %:</p>
+            <p className="text-2xl font-extrabold text-purple-600 dark:text-purple-400">{participacionPorcentaje}%</p>
+          </div>
+        </div>
+      </div>
+
+      {/* ✅ Botón de acción */}
+     <div className="flex justify-end pt-6 space-x-4">
+  <button
+    type="button"
+    onClick={() => {
+      const confirmar = window.confirm('¿Seguro que querés cancelar la carga? Los datos no se guardarán.');
+      if (confirmar && onCancel) {
+        onCancel();
+      }
+    }}
+    className="bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 font-bold py-3 px-6 rounded-lg shadow transition duration-300"
+  >
+    Cancelar
+  </button>
+
+  <button
+    type="submit"
+    className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300"
+  >
+    {esEdicion ? 'Guardar Cambios' : 'Registrar Mesa Completa'}
+  </button>
+</div>
+    </form>
+  );
 };
 
 export default ResultadoFormulario;

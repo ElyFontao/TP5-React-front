@@ -154,7 +154,7 @@ const VistaNacional = () => {
         </header>
 
         <div data-aos="fade-up">
-          <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">📊 Resumen Provincial</h2>
+          <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">📊 Resumen Provincial año 2023</h2>
           {cargandoResumen ? (
             <p className="text-blue-600 dark:text-blue-300">⏳ Cargando resumen...</p>
           ) : errorResumen ? (

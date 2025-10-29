@@ -7,6 +7,8 @@ import ProtectedRoute from '../auth/ProtectedRoute';
 // Componentes de Página
 import Header from '../components/Header';
 import Home from '../pages/Home.jsx';
+import Login from '../pages/Login.jsx'; 
+import NoAutorizado from '../pages/NoAutorizado.jsx';
 import ResultadoListado from '../pages/ResultadoListado.jsx';
 import ResultadoDetalle from '../pages/ResultadoDetalle.jsx';
 import ResultadoCrear from '../pages/ResultadoCrear.jsx';
@@ -15,8 +17,7 @@ import NoEncontrado from '../pages/NoEncontrado.jsx';
 import VistaNacional from '../pages/VistaNacional.jsx';
 import VistaComparativa from '../pages/VistaComparativa.jsx';
 import PanelAdmin from '../pages/PanelAdmin.jsx';
-import Login from '../pages/Login.jsx'; // al inicio del archivo
-import NoAutorizado from '../pages/NoAutorizado.jsx';
+
 
 export const RutasPrincipales = () => {
   const { usuario } = useAuth(); // 🔐 Accede al usuario y rol desde el contexto

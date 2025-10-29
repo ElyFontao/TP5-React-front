@@ -64,30 +64,44 @@ const Home = ({ rolUsuario }) => {
         className="flex flex-col md:flex-row justify-center items-center gap-6 py-10 bg-white dark:bg-gray-900 transition-colors"
         data-aos="zoom-in"
       >
-        {/* Botón visible para todos los roles: acceso al resumen nacional */}
-        <Link
-          to="/nacional"
-          className="flex items-center gap-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-full shadow-lg transition-transform duration-300 hover:scale-105"
-        >
-          <img
-            src="https://static.vecteezy.com/system/resources/previews/059/253/716/non_2x/3d-render-of-data-analysis-icon-charts-graphs-and-magnifying-glass-free-png.png"
-            alt="Ícono de análisis de datos"
-            className="w-7 h-7 object-contain"
-            loading="lazy"
-          />
-          <span>Resumen Nacional (API)</span>
-        </Link>
+  {/* 🌐 Botón institucional para acceso al resumen nacional */}
+<Link
+  to="/nacional"
+  className="group flex items-center justify-between gap-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-semibold py-4 px-6 rounded-xl shadow-xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-700"
+  aria-label="Ir al resumen nacional de resultados"
+>
+  <div className="flex items-center gap-3">
+    <img
+      src="https://static.vecteezy.com/system/resources/previews/059/253/716/non_2x/3d-render-of-data-analysis-icon-charts-graphs-and-magnifying-glass-free-png.png"
+      alt="Ícono de análisis de datos"
+      className="w-8 h-8 object-contain transition-transform group-hover:scale-110"
+      loading="lazy"
+    />
+    <div className="text-left">
+      <p className="text-base leading-tight">Resumen Nacional</p>
+      <p className="text-xs opacity-80">Visualización API de resultados totales</p>
+    </div>
+  </div>
+  <span className="text-xl font-bold group-hover:translate-x-1 transition-transform">→</span>
+</Link>
 
         {/* Botón exclusivo para delegados: acceso al CRUD de mesas */}
-        {rolUsuario === 'delegado' && (
-          <Link
-            to="/items"
-            className="flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-full shadow-lg transition-transform duration-300 hover:scale-105"
-          >
-            <ClipboardDocumentCheckIcon className="w-6 h-6 text-white" />
-            <span>Control de Mesas (CRUD)</span>
-          </Link>
-        )}
+       {rolUsuario === 'delegado' && (
+  <Link
+    to="/items"
+    className="group flex items-center justify-between gap-4 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-semibold py-4 px-6 rounded-xl shadow-xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-green-300 dark:focus:ring-green-700"
+    aria-label="Ir al panel de control de mesas"
+  >
+    <div className="flex items-center gap-3">
+      <ClipboardDocumentCheckIcon className="w-6 h-6 text-white transition-transform group-hover:scale-110" />
+      <div className="text-left">
+        <p className="text-base leading-tight">Control de Mesas</p>
+        <p className="text-xs opacity-80">Registrar, editar y revisar resultados</p>
+      </div>
+    </div>
+    <span className="text-xl font-bold group-hover:translate-x-1 transition-transform">→</span>
+  </Link>
+)}
       </section>
 
       {/* Pie institucional con enlaces y créditos */}

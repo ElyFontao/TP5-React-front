@@ -65,8 +65,10 @@ const ResultadoEditar = () => {
     
     // 4. Renderiza el formulario si los datos están listos
     return (
-        <div className="p-4 md:p-8">
-            <h1 className="text-3xl font-bold mb-6">Editar Resultado Electoral (MT: {id})</h1>
+       <div className="p-4 md:p-8 bg-gray-50 dark:bg-gray-900 min-h-screen">
+  <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6 border-b pb-2">
+    ✏️ Editar Resultado Electoral Mesa Testigo ({id})
+  </h1>
             <ResultadoFormulario 
                 resultadoAEditar={datosResultado}
                 onSubmit={handleEditar} 

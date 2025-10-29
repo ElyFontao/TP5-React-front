@@ -1,59 +1,70 @@
-// src/pages/ResultadoCrear.jsx
+// 📁 src/pages/ResultadoCrear.jsx
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// Importamos el error del contexto para mostrar mensajes de duplicado o API
-import { useResultados } from '../context/ResultadosContext'; 
+// 🎯 Importamos el contexto para acceder a la función de creación y posibles errores
+import { useResultados } from '../context/ResultadosContext';
+// 🧾 Componente del formulario institucional
 import ResultadoFormulario from '../components/ResultadoFormulario';
 
 const ResultadoCrear = () => {
   const navigate = useNavigate();
-  // Obtener la función, y el estado de error del contexto
-  const { crearResultado, error: apiError } = useResultados(); 
-  const [loading, setLoading] = useState(false); // Estado de carga local
 
+  // 📦 Estado de carga local para mostrar spinner o deshabilitar el formulario
+  const [loading, setLoading] = useState(false);
+
+  // 🧠 Obtenemos la función de creación y el error desde el contexto
+  const { crearResultado, error: apiError } = useResultados();
+
+  // ✅ Función que se ejecuta al enviar el formulario
   const handleCrear = async (data) => {
-    // La data ya incluye 'actualizacion' y las validaciones del formulario.
-    
-    setLoading(true);
-    
-    // 1. Llama a la función del Contexto. Esperamos un booleano (true=éxito, false=fallo).
-    const exito = await crearResultado(data);
-    
-    setLoading(false);
+    setLoading(true); // ⏳ Activamos estado de carga
+
+    const exito = await crearResultado(data); // 📨 Enviamos los datos al backend
+
+    setLoading(false); // ✅ Terminó la carga
 
     if (exito) {
-      // 2. Si fue exitoso, navegar al listado.
-      navigate('/items'); 
-    } 
-    // Si 'exito' es false, el Contexto ya estableció 'apiError' 
-    // con el mensaje de duplicado, y se mostrará en la interfaz.
+      navigate('/items'); // 🧭 Redirigimos al listado si fue exitoso
+    }
+    // ⚠️ Si hubo error, el contexto ya lo muestra en apiError
+  };
+
+  // ❌ Función que se ejecuta al hacer clic en "Cancelar"
+  const handleCancelar = () => {
+    const confirmar = window.confirm('¿Seguro que querés cancelar la carga? Los datos no se guardarán.');
+    if (confirmar) {
+      navigate('/items'); // 🧭 Redirige al listado
+    }
   };
 
   return (
     <div className="p-4 md:p-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">
-        ➕ Cargar Nueva Mesa Testigo
-      </h1>
-      
-      {/* 🚨 Mostrar el error de duplicado (si existe) desde el Contexto */}
+{/* 🧭 Título institucional */}
+<h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-6 border-b pb-2">
+  ➕ Cargar Nueva Mesa Testigo
+</h1>
+
+      {/* 🚨 Mensaje de error si la API devuelve duplicado u otro fallo */}
       {apiError && (
-          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 font-bold" role="alert">
-              {apiError}
-          </div>
+        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 mb-4 font-bold" role="alert">
+          {apiError}
+        </div>
       )}
-      
+
+      {/* 🧾 Formulario institucional con props */}
       <ResultadoFormulario 
-        onSubmit={handleCrear} 
-        esEdicion={false} 
-        // Opcional: Deshabilitar el formulario mientras se carga
-        disabled={loading} 
+        onSubmit={handleCrear}        // ✅ Función para guardar
+        onCancel={handleCancelar}     // ❌ Función para cancelar con confirmación
+        esEdicion={false}             // 🆕 Modo creación
+        disabled={loading}            // ⏳ Deshabilita si está cargando
       />
-      
+
+      {/* ⏳ Indicador de carga */}
       {loading && (
-          <div className="text-center mt-4 p-2 text-blue-600 font-semibold">
-              Registrando mesa... Por favor espere.
-          </div>
+        <div className="text-center mt-4 p-2 text-blue-600 font-semibold">
+          Registrando mesa... Por favor espere.
+        </div>
       )}
     </div>
   );
