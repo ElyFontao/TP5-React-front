@@ -68,11 +68,9 @@ vista-nacional/
 └── index.js # Entrada del servidor
 
 ---
-## 🚀 Instalación y ejecución
+🚀 Instalación y ejecución
 
-### 🔧 Backend
-
-```bash
+🔧 Backend
 cd server
 npm install
 touch .env
@@ -123,6 +121,7 @@ Se agradece la atribución si se reutiliza.
 ---
 ##✨ Autora
 Elizabeth Fontao
+
 
 
 
