@@ -1,4 +1,4 @@
-markdown
+
 # 🗳️ VistaNacional – Trazabilidad Electoral Institucional
 
 ## 🌐 Despliegue
@@ -228,10 +228,5 @@ Este proyecto es de uso educativo e institucional. Puede ser adaptado para simul
 
 ✨ Autora
 Elizabeth Fontao Alumna de la Diplomatura en Programación Web Fullstack San Fernando del Valle de Catamarca, Argentina
-
-Código
-
-¿Querés que preparemos una versión con capturas de pantalla o una portada visual para GitHub?
-
 
 
