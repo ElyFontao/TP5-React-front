@@ -1,7 +1,4 @@
 
-Perfecto, Ely. Acá tenés una versión mínima y bien formateada en Markdown para probar que se renderiza correctamente en GitHub o cualquier editor compatible:
-
-```markdown
 # 🗳️ VistaNacional – Trazabilidad Electoral Institucional
 
 ## 🌐 Despliegue
@@ -88,10 +85,6 @@ Abrí [http://localhost:5173](http://localhost:5173) en tu navegador.
 ## ✨ Autora
 
 **Elizabeth Fontao**
-```
-
-Este fragmento está optimizado para que lo pegues en tu `README.md` y se vea bien en GitHub. Si querés que lo combine con el resto del contenido completo, lo armamos en un solo bloque. ¿Querés que lo integre todo en un README final?
-
 
 
 
